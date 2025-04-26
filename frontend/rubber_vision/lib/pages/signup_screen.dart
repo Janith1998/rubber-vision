@@ -13,16 +13,16 @@ class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _contactController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  bool _obscurePassword = true;
+  bool _obscureContact = true;
   bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _passwordController.dispose();
+    _contactController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
   }
@@ -99,30 +99,19 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                        ),
+                      controller: _contactController,
+                      decoration: const InputDecoration(
+                        labelText: 'Mobile',
+                         prefixIcon:  Icon(Icons.phone),
+                        
                       ),
-                      obscureText: _obscurePassword,
+                      obscureText: _obscureContact,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
+                          return 'Please enter your Mobile number';
                         }
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters';
+                        if (value.length < 10) {
+                          return 'Mobile Number Invalid';
                         }
                         return null;
                       },
@@ -131,7 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     TextFormField(
                       controller: _confirmPasswordController,
                       decoration: InputDecoration(
-                        labelText: 'Confirm Password',
+                        labelText: 'Password',
                         prefixIcon: const Icon(Icons.lock_outline),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -149,10 +138,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       obscureText: _obscureConfirmPassword,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please confirm your password';
+                          return 'Please Enter your password';
                         }
-                        if (value != _passwordController.text) {
-                          return 'Passwords do not match';
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
                         }
                         return null;
                       },

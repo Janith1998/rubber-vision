@@ -1,5 +1,8 @@
+
+
 import 'package:flutter/material.dart';
-import 'camera_screen.dart'; // We'll create this next
+import 'camera_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,7 +15,7 @@ class HomeScreen extends StatelessWidget {
       body: _buildBody(context),
       floatingActionButton: _buildScanButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNavBar(),
+      bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
 
@@ -249,7 +252,7 @@ Widget _buildWelcomeCard() {
     );
   }
 
-  Widget _buildBottomNavBar() {
+  Widget _buildBottomNavBar(BuildContext context) {
     return BottomAppBar(
       height: 70,
       padding: EdgeInsets.zero,
@@ -277,7 +280,12 @@ Widget _buildWelcomeCard() {
           ),
           IconButton(
             icon: const Icon(Icons.person_outline, size: 28),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+               MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+
+            },
             color: Colors.grey,
           ),
         ],
