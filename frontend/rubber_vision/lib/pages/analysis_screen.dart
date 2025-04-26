@@ -159,15 +159,18 @@ Widget _buildDiagnosisCard(BuildContext context) {
               ),
             ),
             Flexible(
-              child: Chip(
-                label: Text(
-                  diseaseData.confidence,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12, // Reduced font size if needed
+              child: Padding(
+                padding: const EdgeInsets.only(left: 55),
+                child: Chip(
+                  label: Text(
+                    diseaseData.confidence,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12, // Reduced font size if needed
+                    ),
                   ),
+                  backgroundColor: _getConfidenceColor(diseaseData.confidence),
                 ),
-                backgroundColor: _getConfidenceColor(diseaseData.confidence),
               ),
             ),
           ],

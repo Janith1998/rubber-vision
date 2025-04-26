@@ -1,6 +1,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:rubber_vision/pages/care_guide_screen.dart';
+import 'package:rubber_vision/pages/disease_library_screen.dart';
 import 'camera_screen.dart';
 import 'profile_screen.dart';
 
@@ -121,7 +123,15 @@ Widget _buildWelcomeCard() {
           icon: Icons.insights,
           color: Colors.green[400]!,
           label: 'Disease Library',
-          onTap: () {}, // Navigate to library
+          onTap: () {
+            Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DiseaseLibraryScreen(),
+      ),
+    );
+
+          }, // Navigate to library
         ),
         _buildActionItem(
           context,
@@ -135,7 +145,14 @@ Widget _buildWelcomeCard() {
           icon: Icons.article_outlined,
           color: Colors.purple[400]!,
           label: 'Care Guide',
-          onTap: () {}, // Navigate to guide
+          onTap: () {
+            Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const CareGuideScreen(),
+      ),
+    );
+          }, // Navigate to guide
         ),
       ],
     );
