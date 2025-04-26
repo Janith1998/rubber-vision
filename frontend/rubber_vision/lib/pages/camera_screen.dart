@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rubber_vision/model/disease_model.dart';
+import 'analysis_screen.dart';
+import 'tflite_helper.dart';
 
 class CameraScreen extends StatefulWidget {
   final bool fromGallery;
@@ -11,6 +16,12 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize TFLite when screen loads
+    TFLiteHelper.initialize();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,11 +143,40 @@ class _CameraScreenState extends State<CameraScreen> {
     // Implement camera switching
   }
 
-  void _processImage(String imagePath) {
-    // Send to your ML model
-    Navigator.pop(context); // Return to home with results
-    // Then navigate to results screen
+// Update the _processImage method in _CameraScreenState
+  Future<void> _processImage(String imagePath) async {
+    final File imageFile = File(imagePath);
+    final result = await TFLiteHelper.classifyImage(imageFile);
+
+    if (result != null) {
+      final diseaseData = DiseaseData(
+        disease: result['disease'] ?? 'Unknown',
+        confidence: result['confidence'] ?? '0%',
+        scientificName: result['scientificName'] ?? '',
+        description: result['description'] ?? '',
+        symptoms: result['symptoms'] ?? [],
+        recommendations: result['recommendations'] ?? [],
+        severity: result['severity'] ?? 'Unknown',
+        treatment: result['treatment'] ?? '',
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AnalysisScreen(
+            imagePath: imagePath,
+            isFromCamera: !widget.fromGallery,
+            diseaseData: diseaseData,
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to analyze image')),
+      );
+    }
   }
+
 
   void _navigateToCameraScreen(BuildContext context, {required bool fromGallery}) {
     Navigator.pushReplacement(
@@ -147,3 +187,5 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 }
+
+
