@@ -47,6 +47,7 @@ class CareGuideScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 6,
             offset: const Offset(0, 2),
@@ -169,6 +170,7 @@ class CareGuideScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
+              // ignore: deprecated_member_use
               colors: [color.withOpacity(0.1), color.withOpacity(0.05)],
             ),
             borderRadius: BorderRadius.circular(12),
@@ -180,6 +182,7 @@ class CareGuideScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
                   color: color.withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
@@ -333,6 +336,7 @@ class CareGuideScreen extends StatelessWidget {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           boxShadow: [
             BoxShadow(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.2),
               blurRadius: 10,
               spreadRadius: 0,
@@ -358,6 +362,7 @@ class CareGuideScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
+                    // ignore: deprecated_member_use
                     color: color.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),

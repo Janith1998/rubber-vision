@@ -1,14 +1,39 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:rubber_vision/pages/care_guide_screen.dart';
 import 'package:rubber_vision/pages/disease_library_screen.dart';
+import 'package:rubber_vision/pages/scan_history.dart';
+import 'package:rubber_vision/pages/storage_service.dart';
 import 'camera_screen.dart';
 import 'profile_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<ScanHistory> _scanHistory = [];
+  bool _isLoading = true;
+
+   //late Future<List<ScanHistory>> _scanHistory;
+
+   @override
+  void initState() {
+    super.initState();
+    _loadScanHistory();
+  }
+
+   Future<void>_loadScanHistory() async {
+    setState(()=> _isLoading = true);
+    final history = await StorageService().getScanHistory();
+    setState(() {
+      _scanHistory = history;
+      _isLoading = false;
+    });
+  }
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +86,7 @@ class HomeScreen extends StatelessWidget {
 Widget _buildWelcomeCard() {
   return Card(
     elevation: 0,
-    color: Colors.deepPurple[50], // ✅ correct place
+    color: Colors.deepPurple[50],
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12),
     ),
@@ -92,7 +117,6 @@ Widget _buildWelcomeCard() {
     ),
   );
 }
-
 
   Widget _buildSectionTitle(String title) {
     return Text(title, 
@@ -181,6 +205,7 @@ Widget _buildWelcomeCard() {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
+              // ignore: deprecated_member_use
               color: color.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
@@ -199,20 +224,41 @@ Widget _buildWelcomeCard() {
 
   }
 
-  Widget _buildRecentScans() {
-    // Placeholder - replace with your actual scan history
+
+
+    Widget _buildRecentScans() {
+  if (_isLoading) {
+    return const SizedBox(
+      height: 120,
+      child: Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  if (_scanHistory.isEmpty) {
     return SizedBox(
       height: 120,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          _buildScanCard('Leaf Spot', '2 days ago', Colors.orange),
-          _buildScanCard('Healthy', '1 week ago', Colors.green),
-          _buildScanCard('Powdery Mildew', '2 weeks ago', Colors.blue),
-        ],
+      child: Center(
+        child: Text(
+          'No recent scans',
+          style: TextStyle(color: Colors.grey[600]),
+        ),
       ),
     );
   }
+return SizedBox(
+    height: 120,
+    child: ListView(
+      scrollDirection: Axis.horizontal,
+      children: _scanHistory.map((scan) => 
+        _buildScanCard(
+          scan.disease,
+          _formatTimeAgo(scan.scanDate),
+          _getDiseaseColor(scan.disease),
+        )
+      ).toList(),
+    ),
+  );
+}
 
   Widget _buildScanCard(String result, String date, Color color) {
     return Container(
@@ -223,6 +269,7 @@ Widget _buildWelcomeCard() {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 6,
             offset: const Offset(0, 2),
@@ -237,6 +284,7 @@ Widget _buildWelcomeCard() {
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: color.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -255,10 +303,50 @@ Widget _buildWelcomeCard() {
       ),
     );
   }
+  String _formatTimeAgo(DateTime date) {
+    final now = DateTime.now();
+    final difference = now.difference(date);
+    
+    if (difference.inDays > 30) {
+      final months = (difference.inDays / 30).floor();
+      return '$months ${months == 1 ? 'month' : 'months'} ago';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays} ${difference.inDays == 1 ? 'day' : 'days'} ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} ${difference.inHours == 1 ? 'hour' : 'hours'} ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} ${difference.inMinutes == 1 ? 'minute' : 'minutes'} ago';
+    } else {
+      return 'Just now';
+    }
+  }
 
+    Color _getDiseaseColor(String disease) {
+    switch (disease.toLowerCase()) {
+      case 'bird\'s eye spot':
+        return Colors.orange;
+      case 'colletotrinchum leaf spot':
+        return Colors.blue;
+      case 'corynespora leaf spot':
+        return Colors.red;
+      case 'phytopthora leaf fall':
+        return Colors.purple;
+      case 'powdery mildew':
+        return Colors.amber;
+      default:
+        return Colors.grey;
+    }
+  }
+  
   Widget _buildScanButton(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => _navigateToCameraScreen(context),
+      onPressed: () async {
+        final result = await _navigateToCameraScreen(context);
+        if (result == true) {
+        _loadScanHistory(); // Refresh after returning from camera
+      }     
+   },
+        
       backgroundColor: Colors.deepPurple,
       foregroundColor: Colors.white,
       elevation: 4,
@@ -310,8 +398,8 @@ Widget _buildWelcomeCard() {
     );
   }
 
-  void _navigateToCameraScreen(BuildContext context, {bool fromGallery = false}) {
-    Navigator.push(
+  Future<bool?> _navigateToCameraScreen(BuildContext context, {bool fromGallery = false}) {
+    return Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CameraScreen(fromGallery: fromGallery),

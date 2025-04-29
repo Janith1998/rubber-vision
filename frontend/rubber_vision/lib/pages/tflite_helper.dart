@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
-import 'dart:typed_data';
 
 class TFLiteHelper {
   static late Interpreter _interpreter;
@@ -100,6 +99,11 @@ static Future<Map<String, dynamic>?> classifyImage(File imageFile) async {
     final index = outputArray.indexOf(confidence);
     final label = _labels[index];
 
+    // Only return results for actual diseases (not "rubber" or "non_rubber")
+    if (label == 'rubber' || label == 'non_rubber') {
+      return null;
+    }
+
     return {
       'disease': _getDiseaseName(label),
       'confidence': '${(confidence * 100).toStringAsFixed(2)}%',
@@ -110,10 +114,15 @@ static Future<Map<String, dynamic>?> classifyImage(File imageFile) async {
       'severity': _getSeverity(label),
       'treatment': _getTreatment(label),
     };
+    
   } catch (e) {
-    if (kDebugMode) {
-      print('Error during classification: $e');
+    // ignore: unrelated_type_equality_checks
+    if ( _labels != 'rubber' && _labels != 'non_rubber') {
+      if (kDebugMode) {
+        print('Error during classification: $e');
+      }
     }
+   
     return null;
   }
 }

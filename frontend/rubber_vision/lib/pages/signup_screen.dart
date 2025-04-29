@@ -15,7 +15,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _contactController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  bool _obscureContact = true;
+  final bool _obscureContact = true;
   bool _obscureConfirmPassword = true;
 
   @override

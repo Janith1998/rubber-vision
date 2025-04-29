@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rubber_vision/pages/scan_history.dart';
+import 'package:rubber_vision/pages/storage_service.dart';
 import '../model/disease_model.dart';
 
 class AnalysisScreen extends StatelessWidget {
@@ -65,6 +68,7 @@ class AnalysisScreen extends StatelessWidget {
       height: 300,
       width: double.infinity,
       decoration: BoxDecoration(
+        // ignore: deprecated_member_use
         color: Colors.black.withOpacity(0.05),
         border: Border.all(color: Colors.grey[200]!),
       ),
@@ -91,6 +95,7 @@ class AnalysisScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: Colors.black.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -117,6 +122,7 @@ Widget _buildDiagnosisCard(BuildContext context) {
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
+          // ignore: deprecated_member_use
           color: Colors.grey.withOpacity(0.1),
           blurRadius: 10,
           offset: const Offset(0, 4),
@@ -285,6 +291,7 @@ Widget _buildDiagnosisCard(BuildContext context) {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.grey.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
@@ -419,14 +426,38 @@ Widget _buildDiagnosisCard(BuildContext context) {
     return backgroundColor.computeLuminance() > 0.5 ? Colors.black87 : Colors.white;
   }
 
-  void _saveReport(BuildContext context) {
+void _saveReport(context) async {
+  try {
+    final storage = StorageService();
+    await storage.saveScan(ScanHistory(
+      disease: diseaseData.disease,
+      confidence: diseaseData.confidence,
+      scanDate: DateTime.now(),
+      imagePath: imagePath,
+    ));
+    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Report saved to history'),
         behavior: SnackBarBehavior.floating,
       ),
     );
+    
+    // Navigate back to home with result
+    Navigator.pop(context, true);
+  } catch (e) {
+    if (kDebugMode) {
+      print('Error saving scan: $e');
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Failed to save report'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
+}
+
 
   void _saveToBookmarks(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(

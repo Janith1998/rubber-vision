@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rubber_vision/pages/login_screen.dart';
+import 'package:rubber_vision/pages/tflite_helper.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await TFLiteHelper.initialize();
   runApp(const MainApp());
 }
 
@@ -19,6 +22,7 @@ class MainApp extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           filled: true,
+          // ignore: deprecated_member_use
           fillColor: Colors.grey.withOpacity(0.1),
         ),
       ),
