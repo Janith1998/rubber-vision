@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340885578158",
+    "project_id": "rubber-2c39a",
+    "storage_bucket": "rubber-2c39a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340885578158:android:9dadd48214015f9df6683f",
+        "android_client_info": {
+          "package_name": "com.example.rubber_vision"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbExqdl7ikNiQU4FNI1eqrrvTzWOHDXzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

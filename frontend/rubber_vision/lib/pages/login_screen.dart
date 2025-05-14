@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rubber_vision/auth_service.dart';
 import 'package:rubber_vision/pages/home_screen.dart';
 import 'package:rubber_vision/pages/signup_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -129,17 +130,28 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                        onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              final auth = AuthService();
+                              final user = await auth.signInWithEmail(
+                                _emailController.text.trim(),
+                                _passwordController.text.trim(),
+                              );
 
-                            Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                      );
-                          }
-                        },
+                              if (user != null) {
+                                Navigator.pushReplacement(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                                );
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Login failed. Please check credentials.")),
+                                );
+                              }
+                            }
+                          },
                         child: const Text(
                           'Login',
                           style: TextStyle(fontSize: 16),

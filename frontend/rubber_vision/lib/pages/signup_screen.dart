@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rubber_vision/auth_service.dart';
 import 'package:rubber_vision/pages/login_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -156,11 +159,34 @@ class _SignupScreenState extends State<SignupScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            // Signup action
-                          }
-                        },
+                        onPressed: () async {
+  if (_formKey.currentState!.validate()) {
+    final auth = AuthService();
+    final user = await auth.signUpWithEmailAndMySQL(
+       name: _nameController.text.trim(),
+       email: _emailController.text.trim(),
+       mobile: _contactController.text.trim(),
+       password: _confirmPasswordController.text.trim(),
+    );
+
+    if (user != null) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Signup successful! Please login.")),
+      );
+      Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    } else {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Signup failed. Try again.")),
+      );
+    }
+  }
+},
                         child: const Text(
                           'Sign Up',
                           style: TextStyle(fontSize: 16),
@@ -246,5 +272,9 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
+
+
+
+
   }
 }

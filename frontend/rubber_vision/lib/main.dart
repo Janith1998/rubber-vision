@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:rubber_vision/firebase_options.dart';
 import 'package:rubber_vision/pages/login_screen.dart';
 import 'package:rubber_vision/pages/tflite_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await TFLiteHelper.initialize();
   runApp(const MainApp());
 }
