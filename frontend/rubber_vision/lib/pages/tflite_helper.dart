@@ -40,22 +40,21 @@ class TFLiteHelper {
 
 
 
-  // Convert the image into a format the model can process
+ 
   static Float32List _imageToByteListFloat32(img.Image image, int inputSize) {
-    final convertedBytes = Float32List(1 * inputSize * inputSize * 3); // Batch size 1, width, height, 3 channels
+    final convertedBytes = Float32List(1 * inputSize * inputSize * 3); 
     final buffer = Float32List.view(convertedBytes.buffer);
 
     int pixelIndex = 0;
     for (int y = 0; y < inputSize; y++) {
       for (int x = 0; x < inputSize; x++) {
         final pixel = image.getPixel(x, y);
-        buffer[pixelIndex++] = (pixel.r - 127.5) / 127.5;  // Normalize RGB to [-1, 1]
+        buffer[pixelIndex++] = (pixel.r - 127.5) / 127.5;  
         buffer[pixelIndex++] = (pixel.g - 127.5) / 127.5;
         buffer[pixelIndex++] = (pixel.b - 127.5) / 127.5;
       }
     }
 
-    // Log the shape and dimensions of the tensor being passed to the model
     if (kDebugMode) {
       print("Image shape: [1, $inputSize, $inputSize, 3]");
       print("Tensor shape: ${convertedBytes.length}");
