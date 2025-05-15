@@ -41,46 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBcdzW1mol5n-byL64mHy3f6ljMrm1JPzQ',
-    appId: '1:340885578158:web:b19196097513bc07f6683f',
-    messagingSenderId: '340885578158',
-    projectId: 'rubber-2c39a',
-    authDomain: 'rubber-2c39a.firebaseapp.com',
-    storageBucket: 'rubber-2c39a.firebasestorage.app',
+    apiKey: 'AIzaSyC3sy6QshPaD7ZCgp7jWTI7-vVya3MgdDw',
+    appId: '1:819413563233:web:1c9fc0c0f5093f33b0f720',
+    messagingSenderId: '819413563233',
+    projectId: 'rubber-vision',
+    authDomain: 'rubber-vision.firebaseapp.com',
+    storageBucket: 'rubber-vision.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCbExqdl7ikNiQU4FNI1eqrrvTzWOHDXzg',
-    appId: '1:340885578158:android:9dadd48214015f9df6683f',
-    messagingSenderId: '340885578158',
-    projectId: 'rubber-2c39a',
-    storageBucket: 'rubber-2c39a.firebasestorage.app',
+    apiKey: 'AIzaSyDg3V0IzFZMz2rDtjc4E41ggG1cnjScgBY',
+    appId: '1:819413563233:android:10db1975278b34d9b0f720',
+    messagingSenderId: '819413563233',
+    projectId: 'rubber-vision',
+    storageBucket: 'rubber-vision.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCmMHrHqUPCMqop0P-QPryMSbom7cXZc0Y',
-    appId: '1:340885578158:ios:083b6b03ba140c62f6683f',
-    messagingSenderId: '340885578158',
-    projectId: 'rubber-2c39a',
-    storageBucket: 'rubber-2c39a.firebasestorage.app',
+    apiKey: 'AIzaSyD63giE_mPjQJ98vFwouLBhhRk4CGd46g8',
+    appId: '1:819413563233:ios:2d0ecea4e6a6d9c8b0f720',
+    messagingSenderId: '819413563233',
+    projectId: 'rubber-vision',
+    storageBucket: 'rubber-vision.firebasestorage.app',
     iosBundleId: 'com.example.rubberVision',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCmMHrHqUPCMqop0P-QPryMSbom7cXZc0Y',
-    appId: '1:340885578158:ios:083b6b03ba140c62f6683f',
-    messagingSenderId: '340885578158',
-    projectId: 'rubber-2c39a',
-    storageBucket: 'rubber-2c39a.firebasestorage.app',
+    apiKey: 'AIzaSyD63giE_mPjQJ98vFwouLBhhRk4CGd46g8',
+    appId: '1:819413563233:ios:2d0ecea4e6a6d9c8b0f720',
+    messagingSenderId: '819413563233',
+    projectId: 'rubber-vision',
+    storageBucket: 'rubber-vision.firebasestorage.app',
     iosBundleId: 'com.example.rubberVision',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBcdzW1mol5n-byL64mHy3f6ljMrm1JPzQ',
-    appId: '1:340885578158:web:9d47df0520263bb5f6683f',
-    messagingSenderId: '340885578158',
-    projectId: 'rubber-2c39a',
-    authDomain: 'rubber-2c39a.firebaseapp.com',
-    storageBucket: 'rubber-2c39a.firebasestorage.app',
+    apiKey: 'AIzaSyC3sy6QshPaD7ZCgp7jWTI7-vVya3MgdDw',
+    appId: '1:819413563233:web:ef7fc4d7ba9bbe5bb0f720',
+    messagingSenderId: '819413563233',
+    projectId: 'rubber-vision',
+    authDomain: 'rubber-vision.firebaseapp.com',
+    storageBucket: 'rubber-vision.firebasestorage.app',
   );
+
 }
