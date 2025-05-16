@@ -9,8 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullName = $_POST['full_name'] ?? '';
     $email = $_POST['email'] ?? '';
     $mobile = $_POST['mobile'] ?? '';
+    $address = $_POST['address'] ?? '';
 
-    if (!$fullName || !$email || !$mobile) {
+
+    if (!$fullName || !$email || !$mobile || !$address) {
         echo json_encode(["status" => "error", "message" => "Missing required fields"]);
         exit();
     }
@@ -27,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Insert user
-    $stmt = $conn->prepare("INSERT INTO users (full_name, email, mobile) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $fullName, $email, $mobile);
+    $stmt = $conn->prepare("INSERT INTO users (full_name, email, mobile, address) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $fullName, $email, $mobile, $address);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "User registered"]);

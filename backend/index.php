@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.css" />
     <link rel="stylesheet" href="style.css">
     
+    
 </head>
 <body>
     <div class="dashboard">
@@ -24,31 +25,27 @@
             
             <div class="sidebar-menu">
                 <p class="menu-title">Main</p>
-                <a href="#" class="menu-item active" onclick="showPanel('dashboard-panel')">
+                <a href="#" class="menu-item active" onclick="loadPanel('dashboard-panel', null,event)">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
                 
                 <p class="menu-title">Management</p>
-                <a href="#" class="menu-item" onclick="showPanel('products-panel')">
+                <a href="#" class="menu-item" onclick="loadPanel('Disease-panel', './panels/disease.php', event)">
                     <i class="fas fa-box-open"></i>
-                    <span>Products</span>
+                    <span>Disease Library</span>
                 </a>
-                <a href="#" class="menu-item" onclick="showPanel('orders-panel')">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Orders</span>
-                </a>
-                <a href="#" class="menu-item" onclick="showPanel('customers-panel')">
+                <a href="#" class="menu-item" onclick="loadPanel('customers-panel' , './panels/customers.php', event)">
                     <i class="fas fa-users"></i>
                     <span>Customers</span>
                 </a>
                 
                 <p class="menu-title">Settings</p>
-                <a href="#" class="menu-item" onclick="showPanel('settings-panel')">
+                <a href="#" class="menu-item" onclick="loadPanel('settings-panel', './panels/settings.php', event)">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
-                <a href="#" class="menu-item" onclick="showPanel('reports-panel')">
+                <a href="#" class="menu-item" onclick="loadPanel('reports-panel')">
                     <i class="fas fa-chart-bar"></i>
                     <span>Reports</span>
                 </a>
@@ -136,15 +133,8 @@
                                 </div>
                             </div>
                             
-                            <div class="chart-container">
-                                
-                                <p style="text-align: center; margin-top: 100px; color: #94a3b8;">
-                                    [Seasonal Production Trend Chart Would Appear Here]
-                                </p>
-                            </div>
+                            
                         </div>
-   <!-- dsjd -->
-
                         <div class="map-container">
                             <div class="map-header">
                                 <h3>Sri Lanka Rubber Production Heatmap</h3>
@@ -162,17 +152,16 @@
                                 </div>
                             </div>
                             <div id="sri-lanka-map"></div>
-                        </div>
-
-                     
-                       
-
-                        <!-- end -->
-                    </div>
-                    
-                   
+                        </div> 
+                    </div> 
                 </div>
 
+                 <!-- end -->
+                    <div id="Disease-panel" class="panel"></div>
+                    <div id="orders-panel" class="panel"></div>
+                    <div id="customers-panel" class="panel"></div>
+                    <div id="settings-panel" class="panel"></div>
+                    <div id="reports-panel" class="panel"></div>
                 
             </div>
         </div>
@@ -183,6 +172,8 @@
     
     <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <script>
+
+        
         // Sri Lanka approximate bounds
         const sriLankaBounds = L.latLngBounds(
             L.latLng(5.919, 79.521), // SW
@@ -333,21 +324,44 @@
         });
         
         // Panel navigation function
-        function showPanel(panelId) {
+ function loadPanel(panelId, url = null, event = null) {
             // Hide all panels
             document.querySelectorAll('.panel').forEach(panel => {
                 panel.classList.remove('active');
             });
-            
-            // Show selected panel
-            document.getElementById(panelId).classList.add('active');
-            
-            // Update active menu item
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
+
+    // Show selected panel
+    const panel = document.getElementById(panelId);
+    if (!panel) {
+        console.error(`Panel with ID ${panelId} not found`);
+        return;
+    }
+    panel.classList.add('active');
+
+    // Update active sidebar menu item
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    if (event) {
+        event.currentTarget.classList.add('active');
+    }
+
+    // Load content dynamically if URL is provided
+    if (url) {
+        fetch(url)
+            .then(response => response.text())
+            .then(html => {
+                panel.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading panel:', error);
+                panel.innerHTML = '<div class="error-message">Failed to load content. Please try again.</div>';
             });
-            event.currentTarget.classList.add('active');
-        }
+    }
+}
+
+
     </script>
     
   

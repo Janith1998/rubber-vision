@@ -53,6 +53,7 @@ class AuthService {
     required String name,
     required String email,
     required String mobile,
+    required String address,
     required String password,
   }) async {
     try {
@@ -69,6 +70,7 @@ class AuthService {
           name: name,
           email: email,
           mobile: mobile,
+          address: address,
           password: password,
         );
       }
@@ -108,9 +110,10 @@ class AuthService {
     required String name,
     required String email,
     required String mobile,
+    required String address, 
     required String password,
   }) async {
-    const String apiUrl = "http://192.168.0.4/register_user.php";
+    const String apiUrl = "http://192.168.0.72/register_user.php";
 
     try {
       final response = await http.post(
@@ -119,6 +122,7 @@ class AuthService {
           "full_name": name,
           "email": email,
           "mobile": mobile,
+          "address": address,
           "password": password,
         },
       );
